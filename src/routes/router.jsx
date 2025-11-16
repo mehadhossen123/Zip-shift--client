@@ -14,7 +14,8 @@ import Coverage from "../pages/home/Coverage";
     },
     {
         path:"/coverage",
-        element:<Coverage></Coverage>
+        element:<Coverage></Coverage>,
+        loader:()=>fetch('/services.json').then(res=>res.json())
     }
  ]
  
