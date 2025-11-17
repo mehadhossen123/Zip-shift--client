@@ -10,10 +10,12 @@ import Register from "../pages/Auth/Register";
   {
     path: "/",
  element:<HomeLayout></HomeLayout>,
+ 
  children:[
     {
         index:true,
-        element:<Home></Home>
+        element:<Home></Home>,
+        
     },
     {
         path:"coverage",
@@ -21,6 +23,7 @@ import Register from "../pages/Auth/Register";
         loader:()=>fetch('/services.json').then(res=>res.json())
     }
  ]
+
  
   },
   {

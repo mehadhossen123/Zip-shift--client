@@ -6,9 +6,10 @@ import Brand from './Brand';
 import Live from '../Live';
 import Reviews from '../Reviews';
 
-const reviewsPromise = fetch("/reviews.json").then((res) => res.json());
+
 
 const Home = () => {
+    const reviewsPromise = fetch("/reviews.json").then((res) => res.json());
     return (
       <div>
         <Banner></Banner>
