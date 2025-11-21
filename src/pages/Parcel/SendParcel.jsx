@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
+import Swal from "sweetalert2";
 
 const SendParcel = () => {
   const {
@@ -53,6 +54,24 @@ const districtByRegion=(region)=>{
         }
 
         console.log("total cost ",cost)
+
+        Swal.fire({
+          title: "Are you agree ?",
+          text:`You have to pay ${cost} taka`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Swal.fire({
+            //   title: "Cancel",
+            //   text: "Your file has been deleted.",
+            //   icon: "success",
+            // });
+          }
+        });
 
 
     
