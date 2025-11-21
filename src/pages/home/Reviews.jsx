@@ -1,22 +1,29 @@
-import React, { use } from "react";
+import React, { useEffect, useState } from "react";
 import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ReviewCard from "./ReviewCard";
 import img from "../../assets/customer-top.png";
 
-const Reviews = ({ reviewsPromise }) => {
-  const reviews = use(reviewsPromise);
+const Reviews = () => {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    fetch("/reviews.json") // or your API URL
+      .then((res) => res.json())
+      .then((data) => setReviews(data));
+  }, []);
 
   return (
     <div className="mt-10 ">
       <div className="flex justify-center items-center mt-5 space-y-4">
-        <div className=" w-[500px]">
+        <div className="w-[500px]">
           <div className="flex justify-center">
             <img src={img} alt="" />
           </div>
+
           <div className="mt-5 space-y-3">
-            <h1 className="font-bold text-2xl  text-center">
-              What our customers are sayings
+            <h1 className="font-bold text-2xl text-center">
+              What our customers are saying
             </h1>
             <p className="text-center">
               Enhance posture, mobility, and well-being effortlessly with
@@ -26,6 +33,7 @@ const Reviews = ({ reviewsPromise }) => {
           </div>
         </div>
       </div>
+
       <div className="mt-10">
         <Swiper
           loop={true}
@@ -42,7 +50,7 @@ const Reviews = ({ reviewsPromise }) => {
             slideShadows: true,
           }}
           pagination={true}
-          modules={[EffectCoverflow, Pagination,Autoplay]}
+          modules={[EffectCoverflow, Pagination, Autoplay]}
           className="mySwiper"
           autoplay={{
             delay: 2000,

@@ -1,15 +1,21 @@
 import React from 'react';
 import useAuth from '../../Hooks/useAuth';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 
 const Login = () => {
+
+     const location = useLocation();
+    console.log("google ",location.state)
+    const navigate=useNavigate()
     const { userSignIn, googleLogin } = useAuth();
    const {register,handleSubmit,formState:{errors}}=useForm()
     const handleLogin=(data)=>{
         // console.log(data)
         userSignIn(data.email,data.password).then(res=>{
             console.log(res.user)
+            navigate(location?.state || "/");
+           
         }).catch(error=>{
             console.log(error.message)
         })
@@ -19,6 +25,7 @@ const Login = () => {
        googleLogin()
          .then((res) => {
            console.log(res.user);
+            navigate(location?.state || "/");
          })
          .catch((error) => {
            console.log(error);
@@ -68,6 +75,8 @@ const Login = () => {
               </p>
             )}
           </div>
+          {/* Forget password  */}
+          <Link to={"/password"} className='text-sm hover:text-green-500 cursor-pointer'>Forget password?</Link>
 
           {/* Submit Button */}
           <button
@@ -80,7 +89,7 @@ const Login = () => {
           {/* Login Link */}
           <p className="text-center text-gray-500 mt-2">
             New here? please{" "}
-            <Link to="/register" className="link link-hover font-semibold">
+            <Link to="/register" state={location.state} className="link link-hover font-semibold">
               Register
             </Link>
           </p>

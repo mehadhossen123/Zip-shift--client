@@ -1,12 +1,28 @@
 import React from 'react';
 import Logo from '../../../Component/logo/logo';
-import { NavLink } from 'react-router';
+import {  NavLink } from 'react-router';
+import useAuth from '../../../Hooks/useAuth';
+import { Link } from 'react-router';
+import { MdOutlineArrowOutward } from 'react-icons/md';
+import Loading from '../../../Component/Loading';
 
 const Navbar = () => {
+ const { user, userLogout,loading} = useAuth();
 
+ if(loading){
+  return<Loading></Loading>
+ }
+
+ const handleLogout=()=>{
+     userLogout().then().catch(err=>{
+      console.log(err.message)
+     })
+ }
+ 
     const links=<>
     <li><NavLink>Service</NavLink></li>
     <li><NavLink>About Us </NavLink></li>
+    <li><NavLink to={"send-parcel"}>Send Parcel </NavLink></li>
     <li><NavLink to="coverage">Coverage</NavLink></li>
     </>
     return (
@@ -34,18 +50,33 @@ const Navbar = () => {
               tabIndex="-1"
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
-             {links}
+              {links}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl"><Logo></Logo></a>
+          <a className="btn btn-ghost text-xl">
+            <Logo></Logo>
+          </a>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
-            {links}
-          </ul>
+          <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">Button</a>
+          {user ? (
+            <Link onClick={handleLogout} className="btn"> Log out</Link>
+          ) : (
+            <Link to={"login"} > Login</Link>
+          )}
+
+
+           <div className="flex items-center mx-4 gap-3">
+                        <Link to={"/rider"} className="bg-primary cursor-pointer p-1 px-2  rounded-sm font-bold">
+                          Be a rider
+                        </Link>
+                        <div className="w-8 h-8 bg-black rounded-full  flex justify-center items-center ">
+                          <MdOutlineArrowOutward className="text-primary" />
+                        </div>
+                        
+                      </div>
         </div>
       </div>
     );
