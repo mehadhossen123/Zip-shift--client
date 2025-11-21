@@ -11,55 +11,55 @@ import ForgetPassword from "../pages/Auth/ForgetPassword/ForgetPassword";
 import SendParcel from "../pages/Parcel/SendParcel";
 
  export const router = createBrowserRouter([
-  {
-    path: "/",
- element:<HomeLayout></HomeLayout>,
- 
- children:[
-    { 
-        index:true,
-        element:<Home></Home>,
-        
-    },
-    {
-        path:"rider",
-        element:<PrivateRoute>
-            <Rider></Rider>
-        </PrivateRoute>
+   {
+     path: "/",
+     element: <HomeLayout></HomeLayout>,
 
-    },
-    {
-        path:"send-parcel",
-        element:<PrivateRoute>
-            <SendParcel></SendParcel>
-        </PrivateRoute>
-
-    },
-    {
-        path:"coverage",
-        element:<Coverage></Coverage>,
-        loader:()=>fetch('/services.json').then(res=>res.json())
-    }
- ]
-
- 
-  },
-  {
-    path:"/",
-    element:<AuthLayout></AuthLayout>,
-    children:[
-        {
-            path:"login",
-            element:<Login></Login>
-        },
-        {
-            path:"register",
-            element:<Register></Register>
-        },
-        {
-            path:"password",
-            element:<ForgetPassword></ForgetPassword>
-        }
-    ]
-  }
-]);
+     children: [
+       {
+         index: true,
+         element: <Home></Home>,
+       },
+       {
+         path: "rider",
+         element: (
+           <PrivateRoute>
+             <Rider></Rider>
+           </PrivateRoute>
+         ),
+       },
+       {
+         path: "send-parcel",
+         element: (
+           <PrivateRoute>
+             <SendParcel></SendParcel>
+           </PrivateRoute>
+         ),
+         loader: () => fetch("/services.json").then((res) => res.json()),
+       },
+       {
+         path: "coverage",
+         element: <Coverage></Coverage>,
+         loader: () => fetch("/services.json").then((res) => res.json()),
+       },
+     ],
+   },
+   {
+     path: "/",
+     element: <AuthLayout></AuthLayout>,
+     children: [
+       {
+         path: "login",
+         element: <Login></Login>,
+       },
+       {
+         path: "register",
+         element: <Register></Register>,
+       },
+       {
+         path: "password",
+         element: <ForgetPassword></ForgetPassword>,
+       },
+     ],
+   },
+ ]);

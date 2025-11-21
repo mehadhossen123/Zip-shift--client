@@ -1,15 +1,62 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
+import { useLoaderData } from "react-router";
 
 const SendParcel = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
 
+  const services = useLoaderData();
+  const senderRegion =useWatch({control,name:"senderRegion"})
+  const receiverRegion = useWatch({ control, name: "receiverRegion" });
+
+  const duplicateRegion = services.map((re) => re.region);
+  const regions = [...new Set(duplicateRegion)];
+  
+// find district by region
+const districtByRegion=(region)=>{
+    const districtOrigin=services.filter(r=>r.region===region)
+     const district=districtOrigin.map(r=>r.district)
+     return district;
+}
+
+
+
+
   const handleParcelSubmit = (data) => {
     console.log("handle parcel is clicked", data);
+        const isSameDistrict = data.senderDistrict === data.receiverDistrict;
+      
+        let cost =0;
+        const isDocument = data.parcelType==="document"
+
+        if(isDocument){
+            cost=isSameDistrict? 60:80;
+
+        }
+        else{
+            const weight = data.parcelWeight;
+            if(weight <=3){
+                cost =isSameDistrict? 110:150;
+            }
+            else{
+                const minCharge=isSameDistrict?110:150;
+                const extraWeight=data.parcelWeight-3;
+                const extraCharge=isSameDistrict?extraWeight*40:extraWeight*40+40;
+                cost=minCharge+extraCharge;
+            }
+
+        }
+
+        console.log("total cost ",cost)
+
+
+    
+
   };
 
   return (
@@ -77,6 +124,7 @@ const SendParcel = () => {
             <h2 className="text-xl font-bold mb-5 text-[#0B7373]">
               Sender Details
             </h2>
+            {/* sender name */}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
@@ -87,16 +135,47 @@ const SendParcel = () => {
                   placeholder="Sender Name"
                 />
               </div>
+              {/* sender email */}
 
               <div>
+                <label className="label">Sender email</label>
+                <input
+                  type="email"
+                  className="input w-full"
+                  {...register("senderEmail")}
+                  placeholder="Sender email"
+                />
+              </div>
+              {/* sender contact number  */}
+
+              <div className="">
                 <label className="label">Sender Contact No</label>
                 <input
-                type="number"
+                  type="number"
                   {...register("senderNumber")}
                   className="input w-full"
                   placeholder="Sender Contact No"
                 />
               </div>
+              {/* sender origin  */}
+
+              <div className="">
+                <label className="label">Sender Origin</label>
+                <select
+                  {...register("senderRegion")}
+                  defaultValue="Pick your region"
+                  className="select"
+                >
+                  <option disabled>Pick your region</option>
+                  {regions.map((r, i) => (
+                    <option value={r} key={i}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* sender address  */}
               <div className="col-span-2">
                 <label className="label">Address</label>
                 <input
@@ -105,15 +184,24 @@ const SendParcel = () => {
                   placeholder="Address"
                 />
               </div>
-
-              <div className="col-span-2">
+              {/* sender district */}
+              <div className="">
                 <label className="label">Sender District</label>
-                <input
+                <select
                   {...register("senderDistrict")}
-                  className="input w-full "
-                  placeholder="Address"
-                />
+                  defaultValue="Pick a region"
+                  className="select"
+                >
+                  <option disabled={true}>Pick a browser</option>
+                  {districtByRegion(senderRegion).map((r, i) => (
+                    <option value={r} key={i.id}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
               </div>
+
+              {/* sender instruction */}
 
               <div className="col-span-2">
                 <label className="label">Pickup Instruction</label>
@@ -133,6 +221,7 @@ const SendParcel = () => {
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {/* receiver name */}
               <div>
                 <label className="label">Receiver Name</label>
                 <input
@@ -141,33 +230,74 @@ const SendParcel = () => {
                   placeholder="Receiver Name"
                 />
               </div>
+              {/* receiver email */}
+
               <div>
+                <label className="label">Receiver email</label>
+                <input
+                  type="email"
+                  className="input w-full"
+                  {...register("receiverEmail")}
+                  placeholder="Receiver email"
+                />
+              </div>
+              {/* receiver contact number */}
+              <div className="">
                 <label className="label">Receiver Contact No</label>
                 <input
-                type="number"
+                  type="number"
                   {...register("receiverNumber")}
                   className="input w-full"
                   placeholder="Receiver Contact No"
                 />
               </div>
+              {/* Receiver origin */}
+
+              <div className="">
+                <label className="label"> Receiver origin</label>
+                <select
+                  {...register("receiverRegion")}
+                  defaultValue="Pick your region"
+                  className="select"
+                >
+                  <option disabled>Pick your region</option>
+                  {regions.map((r, i) => (
+                    <option value={r} key={i}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* receiver address */}
 
               <div className="col-span-2">
                 <label className="label">Receiver Address</label>
                 <input
+                  type="text"
                   className="input w-full"
                   {...register("receiverAddress")}
                   placeholder="Address"
                 />
               </div>
+              {/* receiver district */}
 
-              <div className="col-span-2">
-                <label className="label">Receiver District</label>
-                <input
+              <div className="">
+                <label className="label"> Receiver district</label>
+                <select
                   {...register("receiverDistrict")}
-                  className="input w-full "
-                  placeholder="Address"
-                />
+                  defaultValue="Pick your region"
+                  className="select"
+                >
+                  <option disabled>Pick your district</option>
+                  {districtByRegion(receiverRegion).map((r, i) => (
+                    <option value={r} key={i}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
               </div>
+              {/* receiver  instruction */}
 
               <div className="col-span-2">
                 <label className="label">Delivery Instruction</label>
