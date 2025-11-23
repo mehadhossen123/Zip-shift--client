@@ -2,14 +2,20 @@ import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useAuth from "../../Hooks/useAuth";
 
 const SendParcel = () => {
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    // formState: { errors },
   } = useForm();
+
+   const axiosSecure=useAxiosSecure();
+   const {user}=useAuth()
+
 
   const services = useLoaderData();
   const senderRegion =useWatch({control,name:"senderRegion"})
@@ -62,14 +68,23 @@ const districtByRegion=(region)=>{
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, delete it!",
+          confirmButtonText: "Yes!",
         }).then((result) => {
           if (result.isConfirmed) {
-            // Swal.fire({
-            //   title: "Cancel",
-            //   text: "Your file has been deleted.",
-            //   icon: "success",
-            // });
+
+
+          //post parcel info into database .
+          axiosSecure.post("/parcels",data).then(res=>{
+            console.log("after saving the data ",res.data)
+          })
+           
+             
+
+            Swal.fire({
+              title: "Cancel",
+              text: "Your parcel has been added.",
+              icon: "success",
+            });
           }
         });
 
@@ -149,6 +164,7 @@ const districtByRegion=(region)=>{
               <div>
                 <label className="label">Sender Name</label>
                 <input
+                defaultValue={user?.displayName}
                   className="input w-full"
                   {...register("senderName")}
                   placeholder="Sender Name"
@@ -159,6 +175,7 @@ const districtByRegion=(region)=>{
               <div>
                 <label className="label">Sender email</label>
                 <input
+                defaultValue={user?.email}
                   type="email"
                   className="input w-full"
                   {...register("senderEmail")}
