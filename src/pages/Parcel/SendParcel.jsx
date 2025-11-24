@@ -60,6 +60,7 @@ const districtByRegion=(region)=>{
         }
 
         console.log("total cost ",cost)
+        data.cost=cost;
 
         Swal.fire({
           title: "Are you agree ?",
