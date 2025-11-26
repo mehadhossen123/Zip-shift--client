@@ -5,12 +5,13 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { MdDeleteOutline } from "react-icons/md";
 import { CiEdit, CiViewTimeline } from "react-icons/ci";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const MyParcels = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [], refetch } = useQuery({
     queryKey: ["myParcels", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/parcels?email=${user?.email}`);
@@ -20,8 +21,6 @@ const MyParcels = () => {
 
   //   Handle Delete button
   const handleDelete = (id) => {
-    console.log(id);
-
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -32,15 +31,32 @@ const MyParcels = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.delete(`/parcels${id}`);
-
-        // Swal.fire({
-        //   title: "Deleted!",
-        //   text: "Your file has been deleted.",
-        //   icon: "success",
-        // });
+        axiosSecure.delete(`/parcels/${id}`).then((res) => {
+          if (res.data.deletedCount) {
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+          }
+        });
       }
     });
+  };
+
+  //   handle payment is here
+  const handlePayment = async (parcel) => {
+    const parcelInfo = {
+      cost: parcel.cost,
+      senderEmail: parcel.senderEmail,
+      parcelName: parcel.parcelName,
+      parcelId: parcel._id,
+    };
+
+    const res = await axiosSecure.post("/create-checkout-session", parcelInfo);
+    console.log(res.data);
+    window.location.href = res.data.url;
   };
 
   return (
@@ -54,6 +70,7 @@ const MyParcels = () => {
               <th>Si.No </th>
               <th>Name</th>
               <th>Cost </th>
+              <th>Payment</th>
               <th>Payment Status </th>
               <th>Actions</th>
             </tr>
@@ -65,7 +82,20 @@ const MyParcels = () => {
                 <th>{index + 1}</th>
                 <td>{parcel.parcelName}</td>
                 <td>{parcel.cost}</td>
-                <td>Blue</td>
+                <td>
+                  {parcel.paymentStatus === "paid" ? (
+                    <span className="text-green-600">Paid</span>
+                  ) : (
+                    <button
+                      onClick={() => handlePayment(parcel)}
+                      className="btn btn-primary text-black btn-sm "
+                    >
+                      {" "}
+                      Pay
+                    </button>
+                  )}
+                </td>
+                <td>{parcel.paymentStatus}</td>
                 <td>
                   <button className="btn-square btn  mr-2 hover:bg-primary ">
                     <CiEdit />

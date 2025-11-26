@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
@@ -13,85 +13,77 @@ const SendParcel = () => {
     // formState: { errors },
   } = useForm();
 
-   const axiosSecure=useAxiosSecure();
-   const {user}=useAuth()
-
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const services = useLoaderData();
-  const senderRegion =useWatch({control,name:"senderRegion"})
+  const senderRegion = useWatch({ control, name: "senderRegion" });
   const receiverRegion = useWatch({ control, name: "receiverRegion" });
 
   const duplicateRegion = services.map((re) => re.region);
   const regions = [...new Set(duplicateRegion)];
-  
-// find district by region
-const districtByRegion=(region)=>{
-    const districtOrigin=services.filter(r=>r.region===region)
-     const district=districtOrigin.map(r=>r.district)
-     return district;
-}
 
-
-
+  // find district by region
+  const districtByRegion = (region) => {
+    const districtOrigin = services.filter((r) => r.region === region);
+    const district = districtOrigin.map((r) => r.district);
+    return district;
+  };
 
   const handleParcelSubmit = (data) => {
     console.log("handle parcel is clicked", data);
-        const isSameDistrict = data.senderDistrict === data.receiverDistrict;
-      
-        let cost =0;
-        const isDocument = data.parcelType==="document"
+    const isSameDistrict = data.senderDistrict === data.receiverDistrict;
 
-        if(isDocument){
-            cost=isSameDistrict? 60:80;
+    let cost = 0;
+    const isDocument = data.parcelType === "document";
 
-        }
-        else{
-            const weight = data.parcelWeight;
-            if(weight <=3){
-                cost =isSameDistrict? 110:150;
-            }
-            else{
-                const minCharge=isSameDistrict?110:150;
-                const extraWeight=data.parcelWeight-3;
-                const extraCharge=isSameDistrict?extraWeight*40:extraWeight*40+40;
-                cost=minCharge+extraCharge;
-            }
+    if (isDocument) {
+      cost = isSameDistrict ? 60 : 80;
+    } else {
+      const weight = data.parcelWeight;
+      if (weight <= 3) {
+        cost = isSameDistrict ? 110 : 150;
+      } else {
+        const minCharge = isSameDistrict ? 110 : 150;
+        const extraWeight = data.parcelWeight - 3;
+        const extraCharge = isSameDistrict
+          ? extraWeight * 40
+          : extraWeight * 40 + 40;
+        cost = minCharge + extraCharge;
+      }
+    }
 
-        }
+    console.log("total cost ", cost);
+    data.cost = cost;
 
-        console.log("total cost ",cost)
-        data.cost=cost;
-
-        Swal.fire({
-          title: "Are you agree ?",
-          text:`You have to pay ${cost} taka`,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes!",
-        }).then((result) => {
-          if (result.isConfirmed) {
-
-
-          //post parcel info into database .
-          axiosSecure.post("/parcels",data).then(res=>{
-            console.log("after saving the data ",res.data)
-          })
-           
-             
+    Swal.fire({
+      title: "Are you agree ?",
+      text: `You have to pay ${cost} taka`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Continue",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        //post parcel info into database .
+        axiosSecure.post("/parcels", data).then((res) => {
+          console.log("after saving the data ", res.data);
+          if (res.data.data.insertedId) {
+            navigate("/dashboard/my-parcels");
 
             Swal.fire({
-              title: "Cancel",
-              text: "Your parcel has been added.",
+              position: "top-end",
               icon: "success",
+              title: "Your parcel has added. please pay ",
+              showConfirmButton: false,
+              timer: 2500,
             });
           }
         });
-
-
-    
-
+      }
+    });
   };
 
   return (
@@ -165,7 +157,7 @@ const districtByRegion=(region)=>{
               <div>
                 <label className="label">Sender Name</label>
                 <input
-                defaultValue={user?.displayName}
+                  defaultValue={user?.displayName}
                   className="input w-full"
                   {...register("senderName")}
                   placeholder="Sender Name"
@@ -176,7 +168,7 @@ const districtByRegion=(region)=>{
               <div>
                 <label className="label">Sender email</label>
                 <input
-                defaultValue={user?.email}
+                  defaultValue={user?.email}
                   type="email"
                   className="input w-full"
                   {...register("senderEmail")}
