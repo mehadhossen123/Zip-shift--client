@@ -43,7 +43,7 @@ return ()=>{
 
 }
 
-  })
+  },[user,userLogout,navigate])
     return instance
 };
 

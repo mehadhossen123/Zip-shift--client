@@ -24,21 +24,23 @@ const PaymentHistory = () => {
           {/* head */}
           <thead>
             <tr>
-              <th>Si No: </th>
-              <th>Name</th>
-              <th>Amount</th>
-              <th>Transaction id </th>
-              <th>Favorite Color</th>
+              <th className="text-center font-bold text-green-600">Si No: </th>
+              <th className="text-center font-bold text-green-600">Name</th>
+              <th className="text-center font-bold text-green-600">Amount</th>
+              <th className="text-center font-bold text-green-600">Paid Time</th>
+              <th className="text-center font-bold text-green-600">Transaction id </th>
+     
             </tr>
           </thead>
           <tbody>
             {/* row 1 */}
             {payments.map((payment, index) => (
               <tr>
-                <th>{index + 1}</th>
-                <td>Cy Ganderton</td>
-                <td>{payment.amount}</td>
-                <td>{payment.transaction}</td>
+                <th className="text-center">{index + 1}</th>
+                <td className="text-center">Cy Ganderton</td>
+                <td className="text-center">{payment.amount}</td>
+                <td className="text-center">{payment.paidAt}</td>
+                <td className="text-center">{payment.transaction}</td>
               </tr>
             ))}
           </tbody>
