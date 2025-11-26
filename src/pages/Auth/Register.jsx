@@ -3,8 +3,10 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router";
 import axios from "axios";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Register = () => {
+  const axiosSecure=useAxiosSecure()
 
   const location=useLocation()
   const navigate=useNavigate()
@@ -38,8 +40,22 @@ const Register = () => {
         axios
           .post(img_api_key, formData)
           .then((res) => {
-            console.log("after image uploaded ", res.data.data.url);
 
+        //  create user into database 
+
+        const userInfo={
+          email:data.email,
+          displayName:data.name,
+          photoURL:res.data.data.url
+        }
+        axiosSecure.post("/users",userInfo).then((res)=>{
+          if(res.data.createdId){
+            console.log("user created ")
+          }
+
+        })
+         
+                
             // and updated the profile using the firebase
             const imageUrl = res.data.data.url;
             const newUser = {
@@ -69,7 +85,20 @@ const Register = () => {
   const handleGoogleLogin = () => {
     googleLogin()
       .then((res) => {
-        console.log(res.user);
+        //  create user into database
+
+        const userInfo = {
+          email: res.user.email,
+          displayName: res.user.displayName,
+          photoURL: res.user.photoURL,
+        };
+
+        axiosSecure.post("/users", userInfo).then((res) => {
+          navigate(location?.state || "/");
+          if (res.data.createdId) {
+            console.log("user created ");
+          }
+        });
       })
       .catch((error) => {
         console.log(error);
