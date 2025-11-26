@@ -28,6 +28,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "rider",
+        loader: () => fetch("/services.json").then((res) => res.json()),
         element: (
           <PrivateRoute>
             <Rider></Rider>
@@ -91,10 +92,8 @@ export const router = createBrowserRouter([
       },
       {
         path: "payment-history",
-        element:<PaymentHistory></PaymentHistory>,
+        element: <PaymentHistory></PaymentHistory>,
       },
-      
-      
     ],
   },
 ]);

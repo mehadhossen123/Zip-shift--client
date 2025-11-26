@@ -6,7 +6,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Login = () => {
   const location = useLocation();
-  console.log(location)
+  console.log(location);
   const axiosSecure = useAxiosSecure();
 
   const navigate = useNavigate();
@@ -30,7 +30,6 @@ const Login = () => {
   const handleGoogleLogin = () => {
     googleLogin()
       .then((res) => {
-       
         //  create user into database
 
         const userInfo = {
@@ -39,12 +38,12 @@ const Login = () => {
           photoURL: res.user.photoURL,
         };
 
-        axiosSecure.post("/users", userInfo).then(() => {
-          
-         
-        }).finally(()=>{
-          navigate(location?.state || "/");
-        })
+        axiosSecure
+          .post("/users", userInfo)
+          .then(() => {})
+          .finally(() => {
+            navigate(location?.state || "/");
+          });
       })
       .catch((error) => {
         console.log(error);
