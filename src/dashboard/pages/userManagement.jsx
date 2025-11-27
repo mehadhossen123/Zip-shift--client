@@ -3,12 +3,12 @@ import React from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { FiShieldOff } from "react-icons/fi";
 import { FaUserShield } from "react-icons/fa";
-import axios from "axios";
+
 import Swal from "sweetalert2";
 
 const UserManagement = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: users = [] } = useQuery({
+  const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users`);
@@ -18,19 +18,84 @@ const UserManagement = () => {
 
   //   =======Manage handle make admin ========
   const handleMakeAdmin = (user) => {
-    const roleInfo = { role: "admin" };
-    axiosSecure.patch(`/users/${user._id}`, roleInfo).then((res) => {
-      if (res.data.daa.modifiedCount) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: `${user.displayName} marked as a admin`,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      }
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
     });
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You want to make a admin ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: " Yes !",
+        cancelButtonText: "No",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          const roleInfo = { role: "admin" };
+          axiosSecure.patch(`/users/${user._id}`, roleInfo).then((res) => {
+            if (res.data.data.modifiedCount) {
+              refetch();
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: `${user.displayName} marked as a admin`,
+                showConfirmButton: false,
+                timer: 2000,
+              });
+            }
+          });
+        }
+      });
+    
+   
   };
+  const handleRemoveAdmin = (user) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You want to remove from !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: " delete",
+        cancelButtonText: "Cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+             const roleInfo = { role: "user" };
+             axiosSecure.patch(`/users/${user._id}`, roleInfo).then((res) => {
+               if (res.data.data.modifiedCount) {
+                 refetch();
+                 Swal.fire({
+                   position: "top-end",
+                   icon: "success",
+                   title: `${user.displayName} remove from admin`,
+                   showConfirmButton: false,
+                   timer: 2000,
+                 });
+               }
+             });
+          
+        }
+      });
+    
+   
+  };
+
+
   return (
     <div>
       <h1>Manager Users : {users.length}</h1>
@@ -75,13 +140,16 @@ const UserManagement = () => {
                 <td className="text-center">{user.role}</td>
                 <td className="text-center">
                   {user.role === "admin" ? (
-                    <button className="btn btn-sm">
+                    <button
+                      onClick={() => handleRemoveAdmin(user)}
+                      className="btn btn-sm bg-red-500"
+                    >
                       <FiShieldOff />
                     </button>
                   ) : (
                     <button
                       onClick={() => handleMakeAdmin(user)}
-                      className="btn btn-sm"
+                      className="btn btn-sm bg-green-500"
                     >
                       <FaUserShield />
                     </button>
