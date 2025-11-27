@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import { CiDeliveryTruck } from "react-icons/ci";
 import { FaCreditCard, FaMotorcycle } from "react-icons/fa";
+import { FaUsersViewfinder } from "react-icons/fa6";
 
 const DashboardLayout = () => {
     return (
@@ -107,6 +108,19 @@ const DashboardLayout = () => {
                     <FaMotorcycle />
                     <span className="is-drawer-close:hidden">
                       Approve rider
+                    </span>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Users Management "
+                    to={"/dashboard/users-management"}
+                  >
+                    {" "}
+                    <FaUsersViewfinder />
+                    <span className="is-drawer-close:hidden">
+                      Users Management
                     </span>
                   </NavLink>
                 </li>

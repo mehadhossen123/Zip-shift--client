@@ -159,7 +159,7 @@ const Rider = () => {
             <div>
               <label>Contact</label>
               <input
-                {...register("riderContact", { minLength: 12, required: true })}
+                {...register("riderContact", { minLength: 11, required: true })}
                 type="text"
                 placeholder="Contact"
                 className="input input-bordered w-full"
@@ -171,7 +171,7 @@ const Rider = () => {
               )}
               {errors.riderContact?.type === "minLength" && (
                 <p className="text-red-500 text-sm">
-                  NID must be 11 character{" "}
+                  Contact number must be 11 character{" "}
                 </p>
               )}
             </div>
