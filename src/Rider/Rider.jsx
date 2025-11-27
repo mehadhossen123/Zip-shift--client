@@ -2,31 +2,45 @@ import React from "react";
 import img from "../assets/agent-pending.png";
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const Rider = () => {
-    const data=useLoaderData()
-    console.log(data)
-const {register,handleSubmit,control,formState:{errors}}=useForm()
- const riderRegion = useWatch({
-   control,
-   name: "riderRegion",  //watch rider region
- });
+  const data = useLoaderData();
+  const axiosSecure = useAxiosSecure();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+  const riderRegion = useWatch({
+    control,
+    name: "riderRegion", //watch rider region
+  });
 
+  const handleRiderApplication = (data) => {
+    axiosSecure.post(`/riders`, data).then((res) => {
+      if (res.data.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Your request has been pending. we will notify you vai email",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    });
+  };
+  const regions = data.map((r) => r.region);
+  const region = [...new Set(regions)];
 
- const handleRiderApplication=(data)=>{
-    console.log(data)
- }
- const regions=data.map(r=>r.region)
- const region=[...new Set(regions)]
-
-//  Find district by region 
-const findDistrictByRegion=(region)=>{
-    const districts=data.filter(r=>r.region===region)
+  //  Find district by region
+  const findDistrictByRegion = (region) => {
+    const districts = data.filter((r) => r.region === region);
     const district = districts.map((d) => d.district);
-   return district;
-}
- 
- 
+    return district;
+  };
 
   return (
     <div>
@@ -175,7 +189,9 @@ const findDistrictByRegion=(region)=>{
                 className="input input-bordered w-full"
               />
               {errors.riderAddress?.type === "required" && (
-                <p className="text-red-500 text-sm">Address field is required</p>
+                <p className="text-red-500 text-sm">
+                  Address field is required
+                </p>
               )}
             </div>
             {/* Rider er district */}
