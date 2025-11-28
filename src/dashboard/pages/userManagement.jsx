@@ -1,17 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { FiShieldOff } from "react-icons/fi";
 import { FaUserShield } from "react-icons/fa";
 
+
+
 import Swal from "sweetalert2";
 
 const UserManagement = () => {
+const [search,setSearch]=useState("")
+
   const axiosSecure = useAxiosSecure();
   const { data: users = [], refetch } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users",search],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users`);
+      const res = await axiosSecure.get(`/users?name=${search}`);
       return res.data.data;
     },
   });
@@ -98,7 +102,35 @@ const UserManagement = () => {
 
   return (
     <div>
-      <h1>Manager Users : {users.length}</h1>
+      <h1 className="text-4xl my-2 text-center text-green-600">Manager Users</h1>
+      
+      <div className="mx-5 my-2">
+        <label className="input validator">
+          <svg
+            className="h-[1em]  opacity-80"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <g
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeWidth="2.5"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </g>
+          </svg>
+          <input
+          onChange={(e)=>setSearch(e.target.value)}
+            type="text"
+          
+            placeholder="Search specific users"
+           
+          />
+        </label>
+      </div>
 
       <div className="overflow-x-auto">
         <table className="table">
@@ -118,7 +150,7 @@ const UserManagement = () => {
           <tbody>
             {users.map((user, index) => (
               <tr>
-                <td>{index + 1}</td>
+                <td className="text-center">{index + 1}</td>
                 <td className="text-center">
                   <div className="flex items-center gap-3">
                     <div className="avatar">
