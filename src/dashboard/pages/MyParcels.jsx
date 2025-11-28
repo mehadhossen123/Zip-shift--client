@@ -67,22 +67,24 @@ const MyParcels = () => {
           {/* head */}
           <thead>
             <tr>
-              <th>Si.No </th>
-              <th>Name</th>
-              <th>Cost </th>
-              <th>Payment</th>
-              <th>Payment Status </th>
-              <th>Actions</th>
+              <th className="text-black text-center ">Si.No </th>
+              <th className="text-black text-center ">Name</th>
+              <th className="text-black text-center ">Cost </th>
+              <th className="text-black text-center ">Payment</th>
+              <th className="text-black text-center ">Tracking Id</th>
+              
+              <th className="text-black text-center ">Delivery Status </th>
+              <th className="text-black text-center ">Actions</th>
             </tr>
           </thead>
 
           <tbody>
             {parcels.map((parcel, index) => (
               <tr>
-                <th>{index + 1}</th>
-                <td>{parcel.parcelName}</td>
-                <td>{parcel.cost}</td>
-                <td>
+                <th className="text-center">{index + 1}</th>
+                <td className="text-center">{parcel.parcelName}</td>
+                <td className="text-center">{parcel.cost}</td>
+                <td className="text-center">
                   {parcel.paymentStatus === "paid" ? (
                     <span className="text-green-600">Paid</span>
                   ) : (
@@ -95,8 +97,9 @@ const MyParcels = () => {
                     </button>
                   )}
                 </td>
-                <td>{parcel.paymentStatus}</td>
-                <td>
+                <td className="text-center">{parcel.trackingId}</td>
+                <td className="text-center">{parcel.deliveryStatus}</td>
+                <td className="text-center">
                   <button className="btn-square btn  mr-2 hover:bg-primary ">
                     <CiEdit />
                   </button>

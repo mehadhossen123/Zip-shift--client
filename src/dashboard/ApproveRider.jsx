@@ -60,7 +60,10 @@ const ApproveRider = () => {
               <th className="text-black font-bold text-center">
                 Rider District
               </th>
-              <th className="text-black font-bold text-center">Rider Status</th>
+              <th className="text-black font-bold text-center">
+                Application Status
+              </th>
+              <th className="text-black font-bold text-center">Work Status</th>
               <th className="text-black font-bold text-center">
                 Rider Actions
               </th>
@@ -86,6 +89,8 @@ const ApproveRider = () => {
                     {rider.status}
                   </p>
                 </td>
+                <td className="text-center">{rider.workStatus}</td>
+
                 <td className="text-center">
                   <button
                     onClick={() => handleApprove(rider)}

@@ -18,6 +18,7 @@ import PaymentHistory from "../dashboard/PaymentHistory"
 import ApproveRider from "../dashboard/ApproveRider";
 import UserManagement from "../dashboard/pages/userManagement";
 import AdminRoute from "./AdminRoute";
+import AssignParcels from "../dashboard/AssignParcels";
 
 
 
@@ -93,6 +94,15 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <UserManagement></UserManagement>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "assign-parcels",
+       
+        element: (
+          <AdminRoute>
+          <AssignParcels></AssignParcels>
           </AdminRoute>
         ),
       },
