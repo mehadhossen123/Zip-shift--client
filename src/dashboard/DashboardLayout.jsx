@@ -8,7 +8,7 @@ import { MdAssignmentTurnedIn } from "react-icons/md";
 
 const DashboardLayout = () => {
   const { role } = useRole();
-  console.log("dashboard from role ",role)
+ 
   return (
     <div className="max-w-7xl mx-auto px-4">
       <div className="drawer lg:drawer-open">
