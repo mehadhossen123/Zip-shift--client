@@ -14,14 +14,13 @@ import MyParcels from "../dashboard/pages/MyParcels";
 // import Payment from "../dashboard/Payment/Payment";
 import SuccessPayment from "../dashboard/SuccessPayment";
 import CancelPayment from "../dashboard/CancelPayment";
-import PaymentHistory from "../dashboard/PaymentHistory"
+import PaymentHistory from "../dashboard/PaymentHistory";
 import ApproveRider from "../dashboard/ApproveRider";
 import UserManagement from "../dashboard/pages/userManagement";
 import AdminRoute from "./AdminRoute";
 import AssignParcels from "../dashboard/AssignParcels";
-
-
-
+import DeliveriesAssigned from "../dashboard/pages/DeliverieAssigned/DeliveriesAssigned";
+import RiderRoutes from "./RiderRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -88,9 +87,19 @@ export const router = createBrowserRouter([
         path: "my-parcels",
         element: <MyParcels></MyParcels>,
       },
+      // Rider related routes
+      {
+        path: "delivery-assigned",
+        element: (
+          <RiderRoutes>
+            <DeliveriesAssigned></DeliveriesAssigned>
+          </RiderRoutes>
+        ),
+      },
+      // Admin related routes
       {
         path: "users-management",
-       
+
         element: (
           <AdminRoute>
             <UserManagement></UserManagement>
@@ -99,10 +108,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "assign-parcels",
-       
+
         element: (
           <AdminRoute>
-          <AssignParcels></AssignParcels>
+            <AssignParcels></AssignParcels>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "approve-rider",
+
+        element: (
+          <AdminRoute>
+            <ApproveRider></ApproveRider>
           </AdminRoute>
         ),
       },
@@ -118,15 +136,6 @@ export const router = createBrowserRouter([
       {
         path: "payment-history",
         element: <PaymentHistory></PaymentHistory>,
-      },
-      {
-        path: "approve-rider",
-     
-        element: (
-          <AdminRoute>
-            <ApproveRider></ApproveRider>
-          </AdminRoute>
-        ),
       },
     ],
   },
