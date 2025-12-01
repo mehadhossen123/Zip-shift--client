@@ -72,7 +72,7 @@ const MyParcels = () => {
               <th className="text-black text-center ">Cost </th>
               <th className="text-black text-center ">Payment</th>
               <th className="text-black text-center ">Tracking Id</th>
-              
+
               <th className="text-black text-center ">Delivery Status </th>
               <th className="text-black text-center ">Actions</th>
             </tr>
@@ -97,7 +97,9 @@ const MyParcels = () => {
                     </button>
                   )}
                 </td>
-                <td className="text-center">{parcel.trackingId}</td>
+                <td className="text-center">
+                  <Link to={`/parcel-track/${parcel.trackingId}`} >{parcel.trackingId}</Link>
+                </td>
                 <td className="text-center">{parcel.deliveryStatus}</td>
                 <td className="text-center">
                   <button className="btn-square btn  mr-2 hover:bg-primary ">

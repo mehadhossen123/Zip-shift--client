@@ -29,9 +29,7 @@ const AssignParcels = () => {
       return res.data.data;
     },
   });
-  console.log(selectedParcel)
-  console.log(riders)
-
+ 
 
   // Modal assign parcel
   const assignParcelModal = (parcel) => {
@@ -46,7 +44,8 @@ const AssignParcels = () => {
       riderId:rider._id,
       riderName:rider.riderName,
       riderEmail:rider.riderEmail,
-      parcelId:selectedParcel._id
+      parcelId:selectedParcel._id,
+      trackingId:selectedParcel.trackingId
     }
     axiosSecure.patch(`/parcels/${selectedParcel._id}`,assignRiderInfo).then((res)=>{
       if(res.data.modifiedCount){
