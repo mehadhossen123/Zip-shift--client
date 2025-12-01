@@ -6,7 +6,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Login = () => {
   const location = useLocation();
-  console.log(location);
+  
   const axiosSecure = useAxiosSecure();
 
   const navigate = useNavigate();

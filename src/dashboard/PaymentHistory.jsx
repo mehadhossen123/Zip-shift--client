@@ -13,7 +13,7 @@ const PaymentHistory = () => {
       return res.data;
     },
   });
-  console.log(payments)
+
 
   return (
     <div>
@@ -27,9 +27,12 @@ const PaymentHistory = () => {
               <th className="text-center font-bold text-green-600">Si No: </th>
               <th className="text-center font-bold text-green-600">Name</th>
               <th className="text-center font-bold text-green-600">Amount</th>
-              <th className="text-center font-bold text-green-600">Paid Time</th>
-              <th className="text-center font-bold text-green-600">Transaction id </th>
-     
+              <th className="text-center font-bold text-green-600">
+                Paid Time
+              </th>
+              <th className="text-center font-bold text-green-600">
+                Transaction id{" "}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -37,7 +40,7 @@ const PaymentHistory = () => {
             {payments.map((payment, index) => (
               <tr>
                 <th className="text-center">{index + 1}</th>
-                <td className="text-center">Cy Ganderton</td>
+                <td className="text-center">{payment.parcelName}</td>
                 <td className="text-center">{payment.amount}</td>
                 <td className="text-center">{payment.paidAt}</td>
                 <td className="text-center">{payment.transaction}</td>

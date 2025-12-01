@@ -4,7 +4,7 @@ import { CiDeliveryTruck } from "react-icons/ci";
 import { FaCreditCard, FaMotorcycle, FaTasks } from "react-icons/fa";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import useRole from "../Hooks/useRole";
-import { MdAssignmentTurnedIn } from "react-icons/md";
+import { MdAssignmentTurnedIn, MdOutlineTaskAlt } from "react-icons/md";
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -115,6 +115,19 @@ const DashboardLayout = () => {
                       <FaTasks />
                       <span className="is-drawer-close:hidden">
                         Assigned Deliveries
+                      </span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                      data-tip=" Completed Task  "
+                      to={"/dashboard/Completed-Task "}
+                    >
+                      {" "}
+                      <MdOutlineTaskAlt />
+                      <span className="is-drawer-close:hidden">
+                        Completed Task
                       </span>
                     </NavLink>
                   </li>

@@ -21,6 +21,7 @@ import AdminRoute from "./AdminRoute";
 import AssignParcels from "../dashboard/AssignParcels";
 import DeliveriesAssigned from "../dashboard/pages/DeliverieAssigned/DeliveriesAssigned";
 import RiderRoutes from "./RiderRoutes";
+import CompletedTask from "../dashboard/CompleteTask/CompletedTask";
 
 export const router = createBrowserRouter([
   {
@@ -93,6 +94,14 @@ export const router = createBrowserRouter([
         element: (
           <RiderRoutes>
             <DeliveriesAssigned></DeliveriesAssigned>
+          </RiderRoutes>
+        ),
+      },
+      {
+        path: "Completed-Task ",
+        element: (
+          <RiderRoutes>
+            <CompletedTask></CompletedTask>
           </RiderRoutes>
         ),
       },
