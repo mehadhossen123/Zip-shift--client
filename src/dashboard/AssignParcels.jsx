@@ -8,7 +8,7 @@ const AssignParcels = () => {
 
   const modalRef = useRef();
   const axiosSecure = useAxiosSecure();
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [] ,refetch} = useQuery({
     queryKey: ["parcels", "query.senderEmail = email;"],
     queryFn: async () => {
       const res = await axiosSecure.get(
@@ -18,7 +18,7 @@ const AssignParcels = () => {
     },
   });
   //  Get specific rider depend on rider district and parcel district
-  const { data: riders = [] ,refetch} = useQuery({
+  const { data: riders = [] ,refetch:riderRifetch} = useQuery({
     queryKey: ["riders", "available", selectedParcel?.senderDistrict],
     enabled: !!selectedParcel,
     queryFn: async () => {

@@ -5,6 +5,7 @@ import { FaCreditCard, FaMotorcycle, FaTasks } from "react-icons/fa";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import useRole from "../Hooks/useRole";
 import { MdAssignmentTurnedIn, MdOutlineTaskAlt } from "react-icons/md";
+import logoImg from '../assets/logo.png'
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -41,7 +42,7 @@ const DashboardLayout = () => {
           </nav>
           {/* Page content here */}
           <Outlet></Outlet>
-          <div className="p-4">Page Content</div>
+         
         </div>
 
         <div className="drawer-side is-drawer-close:overflow-visible">
@@ -54,12 +55,18 @@ const DashboardLayout = () => {
             {/* Sidebar content here */}
             <ul className="menu w-full grow">
               {/* List item */}
+              <li>
+                <Link to="/">
+                  {" "}
+                  <img src={logoImg} alt="" />
+                </Link>
+              </li>
 
               <li>
                 <Link
-                  to={"/"}
+                  to={"/dashboard"}
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Homepage"
+                  data-tip="Dashboard"
                 >
                   {/* Home icon */}
                   <svg
@@ -75,7 +82,7 @@ const DashboardLayout = () => {
                     <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
                     <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                   </svg>
-                  <span className="is-drawer-close:hidden">Homepage</span>
+                  <span className="is-drawer-close:hidden">Dashboard</span>
                 </Link>
               </li>
 
