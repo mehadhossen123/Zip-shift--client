@@ -7,7 +7,7 @@ const CompletedTask = () => {
 
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
-    const { data: parcels = [], refetch } = useQuery({
+    const { data: parcels = [] } = useQuery({
       queryKey: ["parcels", user?.email, "rider_assigned"],
       queryFn: async () => {
         const res = await axiosSecure.get(

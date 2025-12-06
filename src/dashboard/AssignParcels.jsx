@@ -50,6 +50,7 @@ const AssignParcels = () => {
     axiosSecure.patch(`/parcels/${selectedParcel._id}`,assignRiderInfo).then((res)=>{
       if(res.data.modifiedCount){
          refetch()
+         riderRifetch()
                 Swal.fire({
                   position: "top-end",
                   icon: "success",
